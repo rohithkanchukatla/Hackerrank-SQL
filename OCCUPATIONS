@@ -1,0 +1,9 @@
+SELECT MIN(CASE WHEN occupation = 'Doctor' THEN name ELSE NULL END) AS Doctor,
+    MIN(CASE WHEN occupation = 'Professor' THEN name ELSE NULL END) AS Professor,
+    MIN(CASE WHEN occupation = 'Singer' THEN name ELSE NULL END) AS Singer,
+    MIN(CASE WHEN occupation = 'Actor' THEN name ELSE NULL END) AS Actor
+FROM (
+    SELECT name, occupation, row_number() OVER (PARTITION BY occupation ORDER BY name) AS row_num
+    FROM OCCUPATIONS
+) AS ord
+group by row_num
