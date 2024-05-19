@@ -1,0 +1,13 @@
+SELECT
+    round(AVG(LAT_N),4) AS median
+FROM
+    (
+        SELECT
+            LAT_N,
+            ROW_NUMBER() OVER (ORDER BY LAT_N) AS row_asc,
+            COUNT(*) OVER () AS total
+        FROM
+            STATION
+    ) AS OrderedValues
+WHERE
+    row_asc IN ((total + 1) / 2, (total + 2) / 2);
